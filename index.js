@@ -36,8 +36,10 @@ export async function setupRuby(options = {}) {
   process.chdir(inputs['working-directory'])
 
   const platform = common.getVirtualEnvironmentName()
+  console.log('Parsing Ruby engine and version');
   const [engine, parsedVersion] = parseRubyEngineAndVersion(inputs['ruby-version'])
 
+  console.log('Requiring installer');
   let installer
   if (platform.startsWith('windows-') && engine !== 'jruby') {
     installer = require('./windows')
