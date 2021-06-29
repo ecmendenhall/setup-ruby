@@ -60410,8 +60410,10 @@ async function downloadAndExtract(platform, engine, version, rubyPrefix) {
   console.log('parentDir: ', parentDir);
   console.log('rubyPrefix: ', rubyPrefix);
 
+  console.log('deleting ', rubyPrefix);
   await io.rmRF(rubyPrefix)
   if (!(fs.existsSync(parentDir) && fs.statSync(parentDir).isDirectory())) {
+    console.log('creating ', parentDir);
     await io.mkdirP(parentDir)
   }
 
