@@ -58,8 +58,10 @@ export async function setupRuby(options = {}) {
   console.log('Running envPreInstall');
   envPreInstall()
 
+  console.log('Installing Ruby');
   const rubyPrefix = await installer.install(platform, engine, version)
 
+  console.log('Running after setup hook');
   // When setup-ruby is used by other actions, this allows code in them to run
   // before 'bundle install'.  Installed dependencies may require additional
   // libraries & headers, build tools, etc.
@@ -68,11 +70,14 @@ export async function setupRuby(options = {}) {
   }
 
   if (inputs['bundler'] !== 'none') {
+    console.log('Detecting Gemfiles');
     const [gemfile, lockFile] = bundler.detectGemfiles()
 
+    console.log('Installing bundler');
     const bundlerVersion = await common.measure('Installing Bundler', async () =>
         bundler.installBundler(inputs['bundler'], lockFile, platform, rubyPrefix, engine, version))
 
+    console.log('Running bundle install');
     if (inputs['bundler-cache'] === 'true') {
       await common.measure('bundle install', async () =>
           bundler.bundleInstall(gemfile, lockFile, platform, engine, version, bundlerVersion, inputs['cache-version']))
