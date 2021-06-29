@@ -45,10 +45,14 @@ export async function setupRuby(options = {}) {
     installer = require('./ruby-builder')
   }
 
+  console.log('Getting available ruby versions');
   const engineVersions = installer.getAvailableVersions(platform, engine)
+  console.log('Validating Ruby engine and version');
   const version = validateRubyEngineAndVersion(platform, engineVersions, engine, parsedVersion)
 
+  console.log('Creating .gemrc');
   createGemRC()
+  console.log('Running envPreInstall');
   envPreInstall()
 
   const rubyPrefix = await installer.install(platform, engine, version)
