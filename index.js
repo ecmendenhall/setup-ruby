@@ -26,6 +26,7 @@ export async function run() {
 
 // entry point when this action is run from other actions
 export async function setupRuby(options = {}) {
+  console.log('Setting up Ruby');
   const inputs = { ...options }
   for (const key in inputDefaults) {
     if (!Object.prototype.hasOwnProperty.call(inputs, key)) {
