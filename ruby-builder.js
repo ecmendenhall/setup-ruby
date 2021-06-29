@@ -31,10 +31,12 @@ export async function install(platform, engine, version) {
     rubyPrefix = path.join(os.homedir(), '.rubies', `${engine}-${version}`)
   }
 
+  console.log('Setting up path');
   // Set the PATH now, so the MSYS2 'tar' is in Path on Windows
   common.setupPath([path.join(rubyPrefix, 'bin')])
 
   if (!inToolCache) {
+    console.log('Downloading and extracting Ruby');
     await downloadAndExtract(platform, engine, version, rubyPrefix);
   }
 
@@ -43,6 +45,8 @@ export async function install(platform, engine, version) {
 
 async function downloadAndExtract(platform, engine, version, rubyPrefix) {
   const parentDir = path.dirname(rubyPrefix)
+  console.log('parentDir: ', parentDir);
+  console.log('rubyPrefix: ', rubyPrefix);
 
   await io.rmRF(rubyPrefix)
   if (!(fs.existsSync(parentDir) && fs.statSync(parentDir).isDirectory())) {
